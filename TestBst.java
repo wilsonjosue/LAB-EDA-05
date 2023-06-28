@@ -4,6 +4,7 @@ import myExceptions.ExceptionNoFound;
 public class TestBst {
 
 	public static void main(String[] args) throws ExceptionNoFound {
+		
 		Avl<Integer> b = new Avl<Integer>();
 
 	    b.insert(20);
@@ -18,6 +19,6 @@ public class TestBst {
 	    b.inOrden();
 	    b.insert(60);
 	    b.inOrden();
-	}
 
+	}
 }
