@@ -13,7 +13,10 @@ public class Avl<E extends Comparable<E>> {
     public boolean isEmpty() {
         return this.root == null;
     }
-
+	
+    public E getRoot() {
+        return this.root.getData();
+    }
     public void insert(E x) throws ExceptionNoFound {
         this.root = insert(x, this.root);
         this.height = false;
@@ -295,7 +298,7 @@ public class Avl<E extends Comparable<E>> {
         }
         return parent;
     }
-	
+
     private NodeAvl<E> findParentWithLeftChild(NodeAvl<E> node) {
         NodeAvl<E> parent = null;
         NodeAvl<E> current = this.root;
