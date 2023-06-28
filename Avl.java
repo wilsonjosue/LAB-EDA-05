@@ -111,7 +111,7 @@ public class Avl<E extends Comparable<E>> {
         }
         return node;
     }
-	
+
 	private NodeAvl<E> rotateRSL(NodeAvl<E> node) {
         NodeAvl<E> son = node.getRight();
         node.setRight(son.getLeft());
@@ -126,5 +126,85 @@ public class Avl<E extends Comparable<E>> {
         son.setRight(node);
         node = son;
         return node;
+    }
+	
+	public E getRoot() {
+        return this.root.getData();
+    }
+
+    public E search(E x) throws ExceptionNoFound {
+        NodeAvl<E> aux = search(x, this.root);
+        if (aux == null)
+            throw new ExceptionNoFound("Elemento no se encuentra en el arbol");
+        return aux.getData();
+    }
+
+    private NodeAvl<E> search(E x, NodeAvl<E> current) throws ExceptionNoFound {
+        if (current == null) {
+            return null;
+        } else {
+            int resC = current.getData().compareTo(x);
+            if (resC == 0)
+                return current;
+            if (resC < 0)
+                return search(x, current.getRight());
+            else
+                return search(x, current.getLeft());
+        }
+    }
+
+    public void remove(E x) throws ExceptionNoFound {
+        this.root = remove(x, this.root);
+    }
+
+    private NodeAvl<E> remove(E x, NodeAvl<E> current) throws ExceptionNoFound {
+        if (current == null)
+            throw new ExceptionNoFound("Elemento no se encuentra en el arbol");
+
+        int resC = current.getData().compareTo(x);
+
+        if (resC < 0) {
+            current.setRight(remove(x, current.getRight()));
+        } else if (resC > 0) {
+            current.setLeft(remove(x, current.getLeft()));
+        } else {
+            if (current.getLeft() == null && current.getRight() == null) {
+                current = null;
+            } else if (current.getLeft() == null) {
+                current = current.getRight();
+            } else if (current.getRight() == null) {
+                current = current.getLeft();
+            } else {
+                NodeAvl<E> minValue = findMinValue(current.getRight());
+                current.setData(minValue.getData());
+                current.setRight(remove(minValue.getData(), current.getRight()));
+            }
+        }
+
+        return current;
+    }
+
+    private NodeAvl<E> findMinValue(NodeAvl<E> node) {
+        while (node.getLeft() != null) {
+            node = node.getLeft();
+        }
+        return node;
+    }
+
+    public void inOrden() {
+        if (isEmpty()) {
+            System.out.println("Arbol esta vacío ....");
+        } else {
+            inOrden(this.root);
+            System.out.println();
+        }
+    }
+
+    private void inOrden(NodeAvl<E> current) {
+        if (current.getLeft() != null)
+            inOrden(current.getLeft());
+        System.out.print(current + ", ");
+        if (current.getRight() != null)
+            inOrden(current.getRight());
     }
 }
