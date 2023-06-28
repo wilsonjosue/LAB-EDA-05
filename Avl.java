@@ -221,4 +221,96 @@ public class Avl<E extends Comparable<E>> {
         if (current.getRight() != null)
             inOrden(current.getRight());
     }
+	public E predecessor(E x) throws ExceptionNoFound {
+        NodeAvl<E> node = search(x, this.root);
+        if (node == null)
+            throw new ExceptionNoFound("Elemento no se encuentra en el arbol");
+
+        NodeAvl<E> predecessorNode = findPredecessor(node);
+        if (predecessorNode == null)
+            throw new ExceptionNoFound("No existe predecesor para el elemento dado");
+        return predecessorNode.getData();
+    }
+    
+    private NodeAvl<E> findPredecessor(NodeAvl<E> node) {
+        if (node.getLeft() != null) {
+            return findMaxValue(node.getLeft());
+        } else {
+            NodeAvl<E> parent = findParentWithRightChild(node);
+            while (parent != null && parent.getRight() != node) {
+                node = parent;
+                parent = findParentWithRightChild(node);
+            }
+            return parent;
+        }
+    }
+    
+    private NodeAvl<E> findMaxValue(NodeAvl<E> node) {
+        while (node.getRight() != null) {
+            node = node.getRight();
+        }
+        return node;
+    }
+   
+    public E successor(E x) throws ExceptionNoFound {
+        NodeAvl<E> node = search(x, this.root);
+        if (node == null)
+            throw new ExceptionNoFound("Elemento no se encuentra en el arbol");
+
+        NodeAvl<E> successorNode = findSuccessor(node);
+        if (successorNode == null)
+            throw new ExceptionNoFound("No existe sucesor para el elemento dado");
+
+        return successorNode.getData();
+    }
+
+    private NodeAvl<E> findSuccessor(NodeAvl<E> node) {
+        
+        if (node.getRight() != null) {
+        return findMinValue(node.getRight());
+        } else {
+            NodeAvl<E> parent = findParentWithLeftChild(node);
+            while (parent != null && parent.getLeft() != node) {
+                node = parent;
+                parent = findParentWithLeftChild(node);
+            }
+            return parent;
+        }
+    }
+
+    private NodeAvl<E> findParentWithRightChild(NodeAvl<E> node) {
+        NodeAvl<E> parent = null;
+        NodeAvl<E> current = this.root;
+
+        while (current != null) {
+            int comparison = current.getData().compareTo(node.getData());
+            if (comparison == 0)
+                break;
+            else if (comparison > 0) {
+                parent = current;
+                current = current.getLeft();
+            } else {
+                current = current.getRight();
+            }
+        }
+        return parent;
+    }
+	
+    private NodeAvl<E> findParentWithLeftChild(NodeAvl<E> node) {
+        NodeAvl<E> parent = null;
+        NodeAvl<E> current = this.root;
+
+        while (current != null) {
+            int comparison = current.getData().compareTo(node.getData());
+            if (comparison == 0)
+                break;
+            else if (comparison < 0) {
+                parent = current;
+               current = current.getRight();
+            } else {
+                current = current.getLeft();
+            }
+        }
+        return parent;
+    }
 }
