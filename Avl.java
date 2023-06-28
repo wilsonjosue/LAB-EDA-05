@@ -95,7 +95,7 @@ public class Avl<E extends Comparable<E>> {
         }
         return node;
     }
-
+   
     private NodeAvl<E> balanceToRight(NodeAvl<E> node) {
         NodeAvl<E> son = node.getLeft();
        if (son.getBf() == -1) {
